@@ -18,9 +18,13 @@ images/           ページで使う画像
   gallery-circle-meet-stage.jpg   主催者紹介の写真（CIRCLE MEET STAGE）
   gallery-meet-stage.webp         主催者紹介の写真（MEET STAGE）
 ogp.png           SNS共有用の画像（1200×630）
-favicon.svg       ファビコン
+favicon.svg       タブのアイコン（Chrome・Edge・Firefox用）
+favicon-32.png    タブのアイコン（SafariなどSVG非対応のブラウザ用）
+apple-touch-icon.png  スマホのホーム画面に追加したときのアイコン
 README.md         このファイル
 ```
+
+アイコンを差し替えたときは、`index.html` の `<link rel="icon" …>` と `<link rel="apple-touch-icon" …>` の末尾にある `?v=2` の数字を1つ増やしてください。ブラウザが古いアイコンを覚えたままになるのを防げます。
 
 ビルドの作業はありません。ファイルを直してpushすると、GitHub Pagesにそのまま反映されます。外部のCDNやフォントは読み込んでいません（GA4は測定IDを設定したときだけ読み込みます）。
 
