@@ -138,3 +138,28 @@
 - `prefers-reduced-motion` でスムーススクロールとアニメーションを止める
 - スマホでは `scroll-padding-bottom` で、フォーカスした要素が追従CTAに隠れないようにする
 - 別タブで開くリンクには、アイコンと読み上げ専用の「（新しいタブで開きます）」を付ける
+
+## アクセス計測（GA4）
+
+- 測定IDは `index.html` 内の `GA_MEASUREMENT_ID` に設定します（現在は空＝**計測コードを読み込まない**状態）
+  - `G-` から始まるIDを入れたときだけ、gtag.js を読み込みます
+- エントリーCTAには `data-cta-location` を付けています。クリックすると `cta_click` イベントを送り、パラメータ `cta_location` で押された場所がわかります
+
+| `data-cta-location` | 場所 |
+|---|---|
+| `nav` | ナビ右端のボタン（PCのみ） |
+| `hero` | ファーストビュー |
+| `outline` | 開催概要の直後 |
+| `closing` | 締めのセクション |
+| `sticky` | スマホの追従CTA |
+
+GA4の管理画面で、`cta_location` をカスタムディメンション（イベントスコープ）として登録すると、レポートで場所ごとに集計できます。
+
+### 配布経路ごとのURL
+
+| 配布経路 | URL |
+|---|---|
+| DM | https://ykimura19950219-wq.github.io/circle-battle-stage/?utm_source=dm&utm_campaign=cbs2026 |
+| Discord | https://ykimura19950219-wq.github.io/circle-battle-stage/?utm_source=discord&utm_campaign=cbs2026 |
+| X | https://ykimura19950219-wq.github.io/circle-battle-stage/?utm_source=x&utm_campaign=cbs2026 |
+| メール | https://ykimura19950219-wq.github.io/circle-battle-stage/?utm_source=mail&utm_campaign=cbs2026 |
