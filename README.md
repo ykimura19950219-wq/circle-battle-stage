@@ -8,18 +8,60 @@
 
 ## ファイル構成
 
-| ファイル | 内容 |
-|---|---|
-| `index.html` | ページ本体。画像を埋め込んだ1ファイル構成（下記「編集方法」を参照） |
-| `ogp.png` | SNS共有用の画像（1200×630） |
-| `favicon.svg` | ファビコン |
+```
+index.html        ページ本体（普通のHTML）
+css/style.css     :rootのトークンと全ルール
+js/main.js        追従CTA・ナビの現在地（aria-current）・GA4の読み込み判定とCTA計測
+images/           ページで使う画像
+  lsp-logo.png                    Local STAGE Projectのロゴ（ナビでは白抜きで表示）
+  hero-bg.webp                    ヒーローの背景（AI作成のイメージ写真）
+  gallery-circle-meet-stage.jpg   主催者紹介の写真（CIRCLE MEET STAGE）
+  gallery-meet-stage.webp         主催者紹介の写真（MEET STAGE）
+ogp.png           SNS共有用の画像（1200×630）
+favicon.svg       ファビコン
+README.md         このファイル
+```
 
-### 編集方法
-`index.html` は、読み込み用のスクリプトと、ページのHTMLを埋め込んだ1ファイルです。
+ビルドの作業はありません。ファイルを直してpushすると、GitHub Pagesにそのまま反映されます。外部のCDNやフォントは読み込んでいません（GA4は測定IDを設定したときだけ読み込みます）。
 
-- ページのHTMLは `<script type="__bundler/template">` の中に、JSON文字列として入っています（`</` は `</` と書かれています）
-- 画像は `<script type="__bundler/manifest">` の中に、base64で入っています。HTMLからはUUIDで参照します
-- 編集するときは、テンプレートのJSON文字列をデコードしてHTMLを直し、同じ形式で書き戻してください
+## 編集方法
+
+### 文言を直す
+`index.html` の該当箇所を直接書き換えます。見た目は `css/style.css` のクラスで決まっているので、HTMLに `style=""` を書かないでください。
+
+### 確認のしかた
+ローカルで表示を確かめるときは、リポジトリのフォルダで次を実行し、ブラウザで http://localhost:8000 を開きます。
+
+```bash
+python3 -m http.server 8000
+```
+
+### 参戦団体を追加する
+1. 団体のロゴ画像を `images/teams/` に置きます（例：`images/teams/abc-circle.png`）。
+   - 表示枠は横4：縦3で、はみ出した部分は切り取られます。ロゴは4：3の余白つき画像にしておくと欠けません。
+   - 幅700px前後に書き出しておくと、スマホでもきれいに表示されます。
+2. `index.html` の `<section id="teams">` の中にある、次の1行を探します。
+
+   ```html
+   <p class="t-body t-body--muted">決定次第、順次公開します。</p>
+   ```
+
+3. 最初の団体を載せるときは、この1行を次のブロックに置き換えます。2団体目からは `<figure>`〜`</figure>` を1つずつ足します。
+
+   ```html
+   <div class="c-photo-grid">
+     <figure class="c-photo">
+       <img src="images/teams/abc-circle.png" width="700" height="525" alt="ABCサークルのロゴ" loading="lazy">
+       <figcaption>ABCサークル（〇〇大学）</figcaption>
+     </figure>
+   </div>
+   ```
+
+   - `width` と `height` には、画像ファイルの実際の幅と高さを書きます（読み込み中に表示がずれないようにするため）。
+   - `alt` には「〇〇のロゴ」と書きます。
+4. ローカルで表示を確認してからpushします。
+
+協賛企業も同じ形で、同じセクションに追加できます。見出しを分けたい場合は、`<h3>` を足す前に相談してください（スタイルの追加が必要です）。
 
 ## デザイントークン
 
@@ -141,7 +183,7 @@
 
 ## アクセス計測（GA4）
 
-- 測定IDは `index.html` 内の `GA_MEASUREMENT_ID` に設定します（現在は空＝**計測コードを読み込まない**状態）
+- 測定IDは `js/main.js` 内の `GA_MEASUREMENT_ID` に設定します（現在は空＝**計測コードを読み込まない**状態）
   - `G-` から始まるIDを入れたときだけ、gtag.js を読み込みます
 - エントリーCTAには `data-cta-location` を付けています。クリックすると `cta_click` イベントを送り、パラメータ `cta_location` で押された場所がわかります
 
